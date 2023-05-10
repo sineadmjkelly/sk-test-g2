@@ -1,0 +1,122 @@
+# This template is valid for schema version 1.0.1.
+# To ensure this template is up to date, please see https://github.com/toasttab/service-manifest/tree/main/application/src/main/resources/json
+# For more project details, see https://toasttab.atlassian.net/wiki/spaces/TSC/pages/3336208402/Service+Manifest+Adoption
+
+# The version of the schema. Used for validation, must be in semantic versioning format
+# @type: string
+# @required
+schemaVersion: "1.0.1"
+
+# The human readable name of the service
+# @type: string
+# @required
+serviceName: "sk-test-g2-service"
+
+# The web address of the repository that contains the source code of the artifact that this manifest describes
+# @type: string
+# @required
+repositoryUrl: "https://github.com/toasttab/sk-test-g2-service"
+
+# A brief description of what the service does
+# @type: string
+# @required
+description: "my-test-service"
+
+# The type of artifact that this manifest describes
+# enum ArtifactType = [
+#   "GRPC_SERVICE",
+#   "GRAPHQL_SERVICE",
+#   "SPA",
+#   "REST_SERVICE",
+#   "SCHEDULED_TASK",
+#   "WORKER",
+#   "LIBRARY",
+#   "INFRASTRUCTURE",
+#   "OTHER"
+# ]
+# @type: Array<ArtifactType>
+# @required
+artifactType: [REST_SERVICE]
+
+# @required
+communication:
+
+  # The line of business that is responsible for this artifact
+  # enum Department = [
+  #   "APPLICATION_SERVICES_AND_IDENTITY",
+  #   "BUSINESS_PLATFORM",
+  #   "COMMERCE",
+  #   "DATA_SCIENCE_AND_AI",
+  #   "DEVELOPER_PRODUCTIVITY_AND_RESILIENCY",
+  #   "ECOMM_AND_ONBOARDING",
+  #   "EMPLOYEE",
+  #   "FINTECH",
+  #   "GUEST",
+  #   "HARDWARE",
+  #   "INFRA_ENG",
+  #   "INTERNATIONAL",
+  #   "VENTURES",
+  #   "SUPPLIER_AND_ACCOUNTING",
+  #   "OTHER"
+  # ]
+  # @type: Array<Department>
+  # @required
+  department: [INFRA_ENG]
+
+  # The github team handle of the team that is responsible for this artifact
+  # @type: string
+  # @required
+  githubTeam: "toasttab"
+
+  # The key of the Jira project for feature development and bug tracking for this artifact
+  # @type: string
+  # @required
+  jiraProjectKey: "FPM"
+
+  # A link to github or confluence containing instructions and details about the service. should include a description of the service, diagrams, and other links to dashboards, as well as links to runbooks for how to handle outages for this service
+  # @type: string
+  # @required
+  documentationIndexLink: ""
+
+# The compliance scopes this artifact is subject to
+# enum ComplianceScope = [
+#   "PCI",
+#   "SOX"
+# ]
+# @type: Array<ComplianceScope>
+# @required
+compliance: [SOX]
+
+# @required
+impact:
+
+  # enum Tier = [
+  #   "TIER_0"
+  #   "TIER_1"
+  #   "TIER_2"
+  #   "TIER_3"
+  # ]
+  # @type: Tier
+  # @required
+  tier: "TIER_3"
+
+  # The possible impact this service has in an incident
+  # @required
+  incidentImpact:
+    # @type: string
+    takeOrders: ""
+
+    # @type: string
+    fireOrders: ""
+
+    # @type: string
+    takePayments: ""
+
+    # @type: string
+    fulfillOrders: ""
+
+    # @type: string
+    closeShifts: ""
+
+    # @type: string
+    financialIntegrity: ""

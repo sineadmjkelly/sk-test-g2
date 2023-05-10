@@ -1,0 +1,56 @@
+version: 2.0
+tools:
+  jdk: jdk8
+stages:
+  - stage: pre-build
+    steps:
+      - default_checkout:
+  - stage: docker login
+    steps:
+      - docker_login:
+          accounts:
+            - preproduction # preproduction account includes preprod and sandbox environments
+            - production
+  - stage: build and test
+    steps:
+      - gradle:
+          - clean
+          - check
+          - iTest
+          - --info
+  - stage: sonar-scan
+    steps:
+      - sonar_scan:
+          git_repo: toasttab/sk-test-g2-service
+          project_key: sk-test-g2-service
+  - stage: snyk
+    steps:
+      - snyk_test:
+  - stage: ship
+    when: env.BRANCH_NAME == 'main'
+    stages:
+      - stage: docker ship
+        steps:
+          - tagship:
+              project_type: gradle
+              tag_initial: True
+          - gradle:
+              - clean
+              - createImage
+              - -PimageTag=sk-test-g2-service:$VERSION
+          - docker_tag:
+              account: preproduction
+              source_image: sk-test-g2-service:$VERSION
+              target_image: toast/toast-sk-test-g2-service:$VERSION
+          - docker_push:
+              account: preproduction
+              image_name: toast/toast-sk-test-g2-service:$VERSION
+      - stage: artifactory-publish
+        steps:
+          - artifactory_publish:
+post:
+  always:
+    steps:
+      - testship:
+          - "**/TEST-*.xml"
+          - "**/build/reports/**"
